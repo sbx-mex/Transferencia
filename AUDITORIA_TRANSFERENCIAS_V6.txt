@@ -1,29 +1,34 @@
-Auditoría Transferencias v9 - actualización integral de base
+Auditoría Transferencias v13 - procesamiento mensual trazable
 
-Fuente validada:
-- Base_Transferencias.xlsx / Compras_Transferencias.
-- 329,956 filas procesadas completas.
-- 12 encabezados requeridos encontrados por nombre.
-- Periodo: 01/01/2026 al 18/07/2026.
-- Semana normalizada como entero y Dia conservado como fecha real en origen.
+Fuentes:
+- Enero.csv a Julio.csv.
+- Base_Transferencias.xlsx / Base_Directorio.
+- Base_Transferencias.xlsx / Non Inventory.
 
-Actualización detectada:
-- 985 registros nuevos respecto de la versión publicada.
-- 0 registros anteriores eliminados o sustituidos.
-- Las nuevas líneas abarcan enero a julio; se regeneraron los 7 bloques mensuales.
-- 84,297 transferencias recalculadas con la lógica vigente.
-- 213 agrupaciones nuevas, 2 agrupaciones absorbidas por la conciliación y 335 resultados modificados.
+Periodo:
+- 01/01/2026 al 23/07/2026.
+- La última actualización proviene de la fecha máxima válida de Julio.csv.
 
-Incidencias de origen:
-- 0 filas duplicadas.
-- 3,471 filas con cantidad cero.
-- 6,971 filas con costo total cero.
-- 20 filas cuya multiplicación cantidad por costo unitario difiere del costo total por más de $0.05.
-- 1 fila con signo inconsistente entre cantidad y costo total.
+Controles:
+- Los CSV se ordenan por mes real, no por orden alfabético ni fecha del archivo.
+- Julio usa interpretación mes/día confirmada contra el nombre del archivo.
+- Los demás meses usan la interpretación que coincide exactamente con su mes.
+- 339,162 registros originales conciliados sin diferencia.
+- 338,220 registros conservados en los bloques técnicos.
+- 942 registros Non Inventory excluidos con evidencia.
+- 0 duplicados exactos.
+- 339,162 cruces exactos con Base_Directorio.
+- 0 CeCo sin correspondencia.
+- Patrol y Proveedor sin CeCo permanecen trazables y ocultos de la vista.
 
-Validación técnica:
-- Lógica, filtros, orden cronológico descendente y navegación sin cambios.
-- app.js y service-worker.js sin errores de sintaxis.
-- Manifest y todos los chunks JSON válidos.
-- Caché PWA incrementada a v9 para publicar la nueva base en GitHub Pages.
-- Ningún archivo supera 20 MB.
+Archivos técnicos:
+- data/audit/resumen-procesamiento.json
+- data/audit/exclusiones.json
+- data/audit/ocultos.json
+- data/audit/inconsistencias-datos.json
+
+Validación:
+- La lógica de conciliación existente se conserva.
+- Los filtros, tablas, alertas y exportación PDF se mantienen.
+- Manifest, JSON, JavaScript, PWA y rutas relativas se validan con
+  tools/validate_project.py.

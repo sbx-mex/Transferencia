@@ -36,7 +36,7 @@
           <h2>Valida salidas, entradas y desfases</h2>
           <p class="hero-text program-message" id="programMessage" hidden></p>
           <p class="hero-text" id="friendlyStatus">Listo para revisar transferencias</p>
-          <p class="hero-text" id="lastUpdated" aria-live="polite">Actualizado: --/--</p>
+          <p class="hero-text update-evidence" id="lastUpdated" aria-live="polite">Última actualización: --/--/----</p>
           <div class="hero-actions"><button class="ghost-action" id="resetFilters" type="button">Limpiar filtros</button></div>
         </div>
         <div class="hero-art" aria-hidden="true"><img src="assets/images/transferencia.png" alt=""></div>
@@ -55,10 +55,9 @@
           <label>Ingrediente<select id="ingredientFilter"><option value="">Todos</option></select></label>
           <label>Estado<select id="statusFilter"><option value="">Todos</option></select></label>
           <label>Entrada / Salida<select id="directionFilter"><option value="">Todas</option><option value="salidas">Salidas</option><option value="entradas">Entradas</option></select></label>
-          <label class="wide">Búsqueda<input id="searchFilter" type="search" placeholder="Tienda, proveedor, ingrediente o CeCo"></label>
-          <label class="toggle-field"><input id="coffeeFilter" type="checkbox" checked><span>Ocultar Coffee Patrol</span></label>
-          <label class="toggle-field"><input id="unresolvedProviderFilter" type="checkbox" checked><span>Ocultar proveedor sin CeCo / Transferencias</span></label>
+          <label class="wide">Búsqueda<input id="searchFilter" type="search" placeholder="Tienda, CeCo, artículo, descripción o proveedor"></label>
         </div>
+        <p class="filter-note">Patrol y Proveedor sin CeCo / Transferencias se conservan en el registro técnico y permanecen ocultos de indicadores, gráficas y tablas operativas.</p>
       </section>
 
       <section class="content-section is-visible" data-view="inicio">
@@ -72,7 +71,7 @@
 
       <section class="content-section" data-view="transferencias">
         <article class="card full-card"><div class="card-header"><div><p class="eyebrow">Transferencias</p><h3>Movimientos agrupados por tienda origen y destino</h3></div><span class="badge" id="transferBadge"></span></div><div id="transferCards" class="transfer-grid"></div></article>
-        <article class="card full-card" id="productDetailCard"><div class="card-header"><div><p class="eyebrow">Detalle</p><h3 id="detailTitle">Selecciona una transferencia</h3></div><span class="badge" id="detailBadge"></span></div><div id="detailSubtotal" class="subtotal-strip"></div><div class="table-wrap"><table><thead><tr><th>Ingrediente</th><th>Unidad</th><th>Fecha salida</th><th>Fecha entrada</th><th>Cantidad salida</th><th>Cantidad entrada</th><th>Costo unitario</th><th>Total salida</th><th>Total entrada</th><th>Estado</th></tr></thead><tbody id="detailRows"></tbody></table></div></article>
+        <article class="card full-card" id="productDetailCard"><div class="card-header"><div><p class="eyebrow">Detalle</p><h3 id="detailTitle">Selecciona una transferencia</h3></div><span class="badge" id="detailBadge"></span></div><div id="detailSubtotal" class="subtotal-strip"></div><div class="table-wrap"><table><thead><tr><th>Artículo / descripción</th><th>Unidad</th><th>Fecha salida</th><th>Fecha entrada</th><th>Cantidad salida</th><th>Cantidad entrada</th><th>Costo unitario</th><th>Total salida</th><th>Total entrada</th><th>Archivo / fila</th><th>Evidencia de cruce</th><th>Resultado</th></tr></thead><tbody id="detailRows"></tbody></table></div></article>
       </section>
 
       <section class="content-section" data-view="alertas">
@@ -88,6 +87,7 @@
           <div id="performanceBody"></div>
         </article>
       </section>
+      <footer class="app-footer">Diseñado: Jorge Alcantar Aguiar &amp; Enrique César Flores</footer>
     </main>
   </div>
 </body>

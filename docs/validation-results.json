@@ -1,0 +1,314 @@
+{
+  "summary": {
+    "executed": 60,
+    "passed": 60,
+    "failed": 0,
+    "notExecuted": [
+      "Validación visual real en navegador a 320/768/1440 px.",
+      "Instalación PWA y recarga sin conexión en un navegador físico.",
+      "Disponibilidad de los destinos externos después de publicar en GitHub Pages."
+    ]
+  },
+  "tests": [
+    {
+      "Prueba": "1. Estructura original conservada",
+      "Resultado": "Aprobada",
+      "Evidencia": "Archivos principales presentes."
+    },
+    {
+      "Prueba": "2. README e instrucción interna",
+      "Resultado": "Aprobada",
+      "Evidencia": "Documentación presente."
+    },
+    {
+      "Prueba": "3. Siete CSV mensuales disponibles",
+      "Resultado": "Aprobada",
+      "Evidencia": "Enero a Julio."
+    },
+    {
+      "Prueba": "4. Archivo maestro disponible",
+      "Resultado": "Aprobada",
+      "Evidencia": "Base_Transferencias.xlsx presente."
+    },
+    {
+      "Prueba": "5. Detección cronológica de meses",
+      "Resultado": "Aprobada",
+      "Evidencia": "Orden Enero–Julio."
+    },
+    {
+      "Prueba": "6. No se usa fecha de modificación",
+      "Resultado": "Aprobada",
+      "Evidencia": "El mes se obtiene de nombre y fecha interna."
+    },
+    {
+      "Prueba": "7. Codificación detectada",
+      "Resultado": "Aprobada",
+      "Evidencia": "7/7 UTF-8 con BOM."
+    },
+    {
+      "Prueba": "8. Delimitador detectado",
+      "Resultado": "Aprobada",
+      "Evidencia": "7/7 delimitador coma."
+    },
+    {
+      "Prueba": "9. Encabezados compatibles",
+      "Resultado": "Aprobada",
+      "Evidencia": "12/12 encabezados."
+    },
+    {
+      "Prueba": "10. Fechas válidas",
+      "Resultado": "Aprobada",
+      "Evidencia": "0 fechas inválidas."
+    },
+    {
+      "Prueba": "11. Fechas futuras",
+      "Resultado": "Aprobada",
+      "Evidencia": "0 fechas futuras."
+    },
+    {
+      "Prueba": "12. Julio interpretado correctamente",
+      "Resultado": "Aprobada",
+      "Evidencia": "01/07/2026–23/07/2026."
+    },
+    {
+      "Prueba": "13. Última actualización interna",
+      "Resultado": "Aprobada",
+      "Evidencia": "Máxima fecha válida de Julio.csv."
+    },
+    {
+      "Prueba": "14. Evidencia de última actualización",
+      "Resultado": "Aprobada",
+      "Evidencia": "Archivo y periodo trazables."
+    },
+    {
+      "Prueba": "15. Mes actual disponible",
+      "Resultado": "Aprobada",
+      "Evidencia": "Julio.csv corresponde al mes actual."
+    },
+    {
+      "Prueba": "16. Prueba de fallback",
+      "Resultado": "Aprobada",
+      "Evidencia": "Sin Julio.csv se selecciona Junio.csv y se marca fallback."
+    },
+    {
+      "Prueba": "17. Registros originales",
+      "Resultado": "Aprobada",
+      "Evidencia": "339,162 filas."
+    },
+    {
+      "Prueba": "18. Consolidación total",
+      "Resultado": "Aprobada",
+      "Evidencia": "338,220 registros técnicos después de Non Inventory."
+    },
+    {
+      "Prueba": "19. Duplicados exactos",
+      "Resultado": "Aprobada",
+      "Evidencia": "0 duplicados."
+    },
+    {
+      "Prueba": "20. Prevención de duplicados",
+      "Resultado": "Aprobada",
+      "Evidencia": "Huella estable de 12 campos."
+    },
+    {
+      "Prueba": "21. Conciliación de registros",
+      "Resultado": "Aprobada",
+      "Evidencia": "Originales = visibles + exclusiones + ocultos + incidencias."
+    },
+    {
+      "Prueba": "22. Base_Directorio exacta",
+      "Resultado": "Aprobada",
+      "Evidencia": "968 CeCo únicos."
+    },
+    {
+      "Prueba": "23. CeCo duplicados en Directorio",
+      "Resultado": "Aprobada",
+      "Evidencia": "0 claves duplicadas."
+    },
+    {
+      "Prueba": "24. Cruces correctos de Directorio",
+      "Resultado": "Aprobada",
+      "Evidencia": "339,162 coincidencias exactas."
+    },
+    {
+      "Prueba": "25. CeCo sin correspondencia",
+      "Resultado": "Aprobada",
+      "Evidencia": "0 registros."
+    },
+    {
+      "Prueba": "26. Región y DM disponibles",
+      "Resultado": "Aprobada",
+      "Evidencia": "968 registros con Región y DM."
+    },
+    {
+      "Prueba": "27. CeCo normalizado",
+      "Resultado": "Aprobada",
+      "Evidencia": "Ceros iniciales y 5 dígitos conservados."
+    },
+    {
+      "Prueba": "28. Non Inventory único",
+      "Resultado": "Aprobada",
+      "Evidencia": "343 claves exactas."
+    },
+    {
+      "Prueba": "29. Exclusiones Non Inventory",
+      "Resultado": "Aprobada",
+      "Evidencia": "942 registros trazables."
+    },
+    {
+      "Prueba": "30. Monto Non Inventory",
+      "Resultado": "Aprobada",
+      "Evidencia": "Monto conciliado con detalle."
+    },
+    {
+      "Prueba": "31. Originales no eliminados",
+      "Resultado": "Aprobada",
+      "Evidencia": "Los CSV fuente permanecen intactos."
+    },
+    {
+      "Prueba": "32. Patrol oculto documentado",
+      "Resultado": "Aprobada",
+      "Evidencia": "863 registros en fuente; 862 posteriores a Non Inventory."
+    },
+    {
+      "Prueba": "33. Proveedor sin CeCo documentado",
+      "Resultado": "Aprobada",
+      "Evidencia": "327 registros en fuente; 323 posteriores a Non Inventory."
+    },
+    {
+      "Prueba": "34. Registro técnico de ocultos",
+      "Resultado": "Aprobada",
+      "Evidencia": "1185 registros técnicos."
+    },
+    {
+      "Prueba": "35. Controles de ocultamiento no visibles",
+      "Resultado": "Aprobada",
+      "Evidencia": "Criterios fijos, no reactivables desde la vista."
+    },
+    {
+      "Prueba": "36. Selector de mes y todos los meses",
+      "Resultado": "Aprobada",
+      "Evidencia": "Control disponible."
+    },
+    {
+      "Prueba": "37. Filtros requeridos",
+      "Resultado": "Aprobada",
+      "Evidencia": "Región, DM, tienda, búsqueda y estatus."
+    },
+    {
+      "Prueba": "38. Limpieza de filtros",
+      "Resultado": "Aprobada",
+      "Evidencia": "Acción enlazada."
+    },
+    {
+      "Prueba": "39. Carga mensual aislada",
+      "Resultado": "Aprobada",
+      "Evidencia": "El conjunto activo se reconstruye al cambiar periodo."
+    },
+    {
+      "Prueba": "40. Error de un mes no bloquea los demás",
+      "Resultado": "Aprobada",
+      "Evidencia": "Manejo por archivo."
+    },
+    {
+      "Prueba": "41. Mensaje sin resultados",
+      "Resultado": "Aprobada",
+      "Evidencia": "Estado vacío accionable."
+    },
+    {
+      "Prueba": "42. Indicadores reactivos",
+      "Resultado": "Aprobada",
+      "Evidencia": "KPIs calculados en apply/renderAll."
+    },
+    {
+      "Prueba": "43. Trazabilidad en detalle",
+      "Resultado": "Aprobada",
+      "Evidencia": "Columnas visibles."
+    },
+    {
+      "Prueba": "44. Pie de página único",
+      "Resultado": "Aprobada",
+      "Evidencia": "Una sola aparición."
+    },
+    {
+      "Prueba": "45. Responsive desde 320 px",
+      "Resultado": "Aprobada",
+      "Evidencia": "Reglas responsivas y contenedor de tabla."
+    },
+    {
+      "Prueba": "46. Sin rutas absolutas",
+      "Resultado": "Aprobada",
+      "Evidencia": "Rutas relativas."
+    },
+    {
+      "Prueba": "47. Manifest válido",
+      "Resultado": "Aprobada",
+      "Evidencia": "start_url y scope relativos."
+    },
+    {
+      "Prueba": "48. Caché PWA incrementada",
+      "Resultado": "Aprobada",
+      "Evidencia": "Versión v13."
+    },
+    {
+      "Prueba": "49. Datos network-first",
+      "Resultado": "Aprobada",
+      "Evidencia": "Actualiza caché y conserva fallback."
+    },
+    {
+      "Prueba": "50. JavaScript válido",
+      "Resultado": "Aprobada",
+      "Evidencia": "app.js y service-worker.js."
+    },
+    {
+      "Prueba": "51. Todos los JSON válidos",
+      "Resultado": "Aprobada",
+      "Evidencia": "Manifest, chunks y auditoría parseados."
+    },
+    {
+      "Prueba": "52. Lógica de conciliación ejecutable",
+      "Resultado": "Aprobada",
+      "Evidencia": "Auditoría Node completada."
+    },
+    {
+      "Prueba": "53. Casos críticos calculados",
+      "Resultado": "Aprobada",
+      "Evidencia": "31,585 casos mensuales requieren revisión."
+    },
+    {
+      "Prueba": "54. Julio sin datos residuales",
+      "Resultado": "Aprobada",
+      "Evidencia": "Solo Julio se necesita para conciliar el periodo más reciente."
+    },
+    {
+      "Prueba": "55. Todos los meses consultables",
+      "Resultado": "Aprobada",
+      "Evidencia": "7 periodos y vista consolidada."
+    },
+    {
+      "Prueba": "56. Compatibilidad con subruta GitHub Pages",
+      "Resultado": "Aprobada",
+      "Evidencia": "Carga HTTP desde /Transferencia-main/."
+    },
+    {
+      "Prueba": "57. Manejo de CSV vacío",
+      "Resultado": "Aprobada",
+      "Evidencia": "Rechazo aislado con mensaje."
+    },
+    {
+      "Prueba": "58. Manejo de columnas faltantes",
+      "Resultado": "Aprobada",
+      "Evidencia": "Rechazo aislado con detalle."
+    },
+    {
+      "Prueba": "59. Manejo de fecha inválida",
+      "Resultado": "Aprobada",
+      "Evidencia": "Fecha rechazada."
+    },
+    {
+      "Prueba": "60. Actualización sin JavaScript manual",
+      "Resultado": "Aprobada",
+      "Evidencia": "Descubrimiento automático."
+    }
+  ]
+}

@@ -2,34 +2,79 @@
 
 ## Versión
 
-`v12-filtro-proveedor-sin-ceco`
+`v13-mensual-auditada`
 
-## Fuente
+Aplicación web estática para la auditoría crítica de transferencias entre tiendas.
+Conserva la conciliación existente y agrega trazabilidad desde cada CSV mensual
+hasta `Base_Directorio` y `Non Inventory`.
 
-`Base_Transferencias.xlsx`, hoja `Compras_Transferencias`, actualizada hasta el 20/07/2026.
+## Fuentes
 
-## Reglas de conciliación
+- `data/source/monthly/*.csv`: un archivo independiente por mes.
+- `data/source/Base_Transferencias.xlsx`:
+  - `Base_Directorio`: fuente oficial de Tienda, Región y DM.
+  - `Non Inventory`: artículos excluidos de indicadores y conciliación.
 
-- `Cantidad < 0`: salida desde el CeCo de la fila hacia el CeCo inicial del proveedor.
-- `Cantidad > 0`: entrada en el CeCo de la fila desde el CeCo inicial del proveedor.
-- Las fechas válidas del Excel se normalizan como `dd/mm/aaaa` y se almacenan como ISO para evitar cruces ambiguos.
-- La relación origen/destino se valida en ambos sentidos mediante CeCos de cinco dígitos.
-- Solo existe una transferencia por fecha, CeCo origen y CeCo destino.
-- Una entrada mayor que su salida se concilia hasta la cantidad enviada y su remanente no crea una transferencia duplicada.
-- Las entradas completamente independientes se agrupan por fecha y pareja de CeCos antes de mostrarse como `Falta salida`.
-- Los valores sin CeCo inicial, incluido `Transferencias`, se agrupan como `Proveedor sin CeCo`.
-- El filtro `Ocultar proveedor sin CeCo / Transferencias` limpia los reportes sin eliminar registros.
-- El mensaje operativo `JUNTÉMONOS MÁS` se administra desde `data/juntemonos-mas.json`.
+Los datos publicados en la PWA se generan en `data/chunks/`. El navegador no
+requiere Python, Excel, backend ni servidor.
+
+## Actualización mensual
+
+1. Coloca el CSV nuevo en `data/source/monthly/`.
+2. Usa el nombre del mes correspondiente, por ejemplo `Agosto.csv`.
+3. Si cambió el maestro, reemplaza `data/source/Base_Transferencias.xlsx` sin
+   renombrar las hojas ni sus encabezados.
+4. Instala una sola vez las dependencias:
+
+   `python -m pip install -r tools/requirements.txt`
+
+5. Ejecuta:
+
+   `python tools/process_monthly_data.py`
+
+6. Ejecuta las validaciones:
+
+   `python tools/validate_project.py`
+
+7. Publica los archivos regenerados.
+
+No es necesario modificar JavaScript para agregar meses posteriores.
+
+## Controles del procesamiento
+
+- Detecta mes por nombre y lo confirma contra las fechas internas.
+- Detecta codificación y delimitador.
+- Rechaza por separado los CSV incompatibles sin bloquear los demás.
+- Conserva los 12 campos originales y añade mes, archivo, fila y evidencia.
+- Elimina de la consolidación únicamente duplicados exactos.
+- Excluye `Non Inventory` mediante coincidencia exacta tras normalizar espacios
+  y tipos de texto.
+- Conserva exclusiones e incidencias en `data/audit/`.
+- Mantiene Patrol y Proveedor sin CeCo en el registro técnico, pero ocultos de
+  tablas, indicadores, gráficas y exportaciones operativas.
+- Calcula Última actualización con la fecha máxima válida del archivo del mes
+  actual; si falta, usa el periodo más reciente y lo informa.
+
+## Reglas de conciliación conservadas
+
+- `Cantidad < 0`: salida desde el CeCo de la fila hacia el CeCo inicial del
+  proveedor.
+- `Cantidad > 0`: entrada en el CeCo de la fila desde el CeCo inicial del
+  proveedor.
+- La relación origen/destino se valida en ambos sentidos con CeCo exacto.
+- Una entrada mayor que su salida se concilia hasta la cantidad enviada.
+- Las entradas independientes se agrupan por fecha y pareja de CeCos.
 - La coincidencia exacta de ingrediente tiene prioridad.
-- Si los nombres difieren, solo se concilia por equivalencia económica cuando unidad, cantidad y costo son compatibles y la opción es inequívoca.
+- Si los nombres difieren, solo se usa equivalencia económica cuando unidad,
+  cantidad y costo son compatibles y la opción es inequívoca.
 - Cada entrada se utiliza una sola vez.
-- Las variantes de nombre de tienda se consolidan por CeCo con el directorio como nombre canónico.
-- El resumen respeta año, mes, semana, región, DM, tienda y demás filtros activos.
-- `38100 SBUX Coffee_Patrol` conserva su tratamiento especial.
-- Los ingredientes de `Non Inventory` permanecen excluidos de la auditoría principal.
+- El resumen respeta los filtros activos.
 
-## Compatibilidad
+## PWA y GitHub Pages
 
-- GitHub Pages y PWA conservados.
-- Datos divididos por mes; ningún archivo supera 20 MB.
-- Sin dependencias de compilación.
+- Rutas relativas compatibles con la subruta `Transferencia`.
+- Service Worker con caché `transferencias-v13-mensual-auditada`.
+- Los datos se consultan con estrategia network-first y se actualizan en caché,
+  evitando servir meses anteriores cuando existe conexión.
+- Después de la primera consulta de un mes, su bloque queda disponible sin
+  conexión en ese dispositivo.

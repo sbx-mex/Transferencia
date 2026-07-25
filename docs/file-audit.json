@@ -1,13 +1,20 @@
 {
-  "version": "v1.1-github-ready-data-split",
+  "version": "v13-mensual-auditada",
   "limitBytes": 20971520,
   "files": [
     {
-      "path": "README.md",
-      "bytes": 3975,
-      "mb": 0.0038,
+      "path": "AUDITORIA_TRANSFERENCIAS_V6.txt",
+      "bytes": 1287,
+      "mb": 0.0012,
       "over20MB": false,
-      "sha256": "d9663df9f2e96059"
+      "sha256": "113b69424b47396f"
+    },
+    {
+      "path": "README.md",
+      "bytes": 3161,
+      "mb": 0.003,
+      "over20MB": false,
+      "sha256": "f656605cd12f903e"
     },
     {
       "path": "assets/icons/icon-192.svg",
@@ -39,94 +46,220 @@
     },
     {
       "path": "css/styles.css",
-      "bytes": 8003,
-      "mb": 0.0076,
+      "bytes": 12221,
+      "mb": 0.0117,
       "over20MB": false,
-      "sha256": "ae4c465233a239b4"
+      "sha256": "3c704e8344b7e22e"
+    },
+    {
+      "path": "data/audit/exclusiones.json",
+      "bytes": 677685,
+      "mb": 0.6463,
+      "over20MB": false,
+      "sha256": "b76e87efb9e86f3b"
+    },
+    {
+      "path": "data/audit/inconsistencias-datos.json",
+      "bytes": 6669184,
+      "mb": 6.3602,
+      "over20MB": false,
+      "sha256": "ce187b93861d7429"
+    },
+    {
+      "path": "data/audit/ocultos.json",
+      "bytes": 700848,
+      "mb": 0.6684,
+      "over20MB": false,
+      "sha256": "8b0a708c5213a26c"
+    },
+    {
+      "path": "data/audit/resumen-procesamiento.json",
+      "bytes": 9824,
+      "mb": 0.0094,
+      "over20MB": false,
+      "sha256": "ecf230c72962c339"
     },
     {
       "path": "data/chunks/transferencias-2026-01.json",
-      "bytes": 3570264,
-      "mb": 3.4049,
+      "bytes": 5174839,
+      "mb": 4.9351,
       "over20MB": false,
-      "sha256": "8911d4621def8b82"
+      "sha256": "255c23aad5b66c1f"
     },
     {
       "path": "data/chunks/transferencias-2026-02.json",
-      "bytes": 3123587,
-      "mb": 2.9789,
+      "bytes": 4525912,
+      "mb": 4.3162,
       "over20MB": false,
-      "sha256": "d8848305007ceb97"
+      "sha256": "d40e141d06785250"
     },
     {
       "path": "data/chunks/transferencias-2026-03.json",
-      "bytes": 3065673,
-      "mb": 2.9237,
+      "bytes": 4415130,
+      "mb": 4.2106,
       "over20MB": false,
-      "sha256": "b7c6930aa561d3a2"
+      "sha256": "b9c5e50be4039398"
     },
     {
       "path": "data/chunks/transferencias-2026-04.json",
-      "bytes": 3651937,
-      "mb": 3.4828,
+      "bytes": 5244997,
+      "mb": 5.002,
       "over20MB": false,
-      "sha256": "51e3e009c037cc56"
+      "sha256": "b731f5da5c80bde5"
     },
     {
       "path": "data/chunks/transferencias-2026-05.json",
-      "bytes": 3689605,
-      "mb": 3.5187,
+      "bytes": 5329273,
+      "mb": 5.0824,
       "over20MB": false,
-      "sha256": "c4ecd4a344268bf2"
+      "sha256": "bfabaeeb8ecc41e2"
     },
     {
       "path": "data/chunks/transferencias-2026-06.json",
-      "bytes": 3705801,
-      "mb": 3.5341,
+      "bytes": 5367520,
+      "mb": 5.1189,
       "over20MB": false,
-      "sha256": "b321910a38ec1148"
+      "sha256": "db54ac7f112867fc"
     },
     {
       "path": "data/chunks/transferencias-2026-07.json",
-      "bytes": 665647,
-      "mb": 0.6348,
+      "bytes": 3655953,
+      "mb": 3.4866,
       "over20MB": false,
-      "sha256": "d448f57a11878251"
+      "sha256": "8dee6a12820e5be4"
+    },
+    {
+      "path": "data/juntemonos-mas.json",
+      "bytes": 283,
+      "mb": 0.0003,
+      "over20MB": false,
+      "sha256": "f47c57c3fd57b2ab"
     },
     {
       "path": "data/manifest-data.json",
-      "bytes": 92555,
-      "mb": 0.0883,
+      "bytes": 200443,
+      "mb": 0.1912,
       "over20MB": false,
-      "sha256": "e7dee9d80b5e7aac"
+      "sha256": "d71b19a4d2ef0f81"
+    },
+    {
+      "path": "data/source/Base_Transferencias.xlsx",
+      "bytes": 1428104,
+      "mb": 1.3619,
+      "over20MB": false,
+      "sha256": "be6b98cb50eb1177"
+    },
+    {
+      "path": "data/source/monthly/Abril.csv",
+      "bytes": 7313553,
+      "mb": 6.9747,
+      "over20MB": false,
+      "sha256": "f1bdf1b296ac113e"
+    },
+    {
+      "path": "data/source/monthly/Enero.csv",
+      "bytes": 7108812,
+      "mb": 6.7795,
+      "over20MB": false,
+      "sha256": "6edf7f72501ea1c6"
+    },
+    {
+      "path": "data/source/monthly/Febrero.csv",
+      "bytes": 6237341,
+      "mb": 5.9484,
+      "over20MB": false,
+      "sha256": "b6bad0ff6a5df56d"
+    },
+    {
+      "path": "data/source/monthly/Julio.csv",
+      "bytes": 5002900,
+      "mb": 4.7711,
+      "over20MB": false,
+      "sha256": "27b8f5cd29a231a5"
+    },
+    {
+      "path": "data/source/monthly/Junio.csv",
+      "bytes": 7410948,
+      "mb": 7.0676,
+      "over20MB": false,
+      "sha256": "6ce60f78abda69f1"
+    },
+    {
+      "path": "data/source/monthly/Marzo.csv",
+      "bytes": 6115380,
+      "mb": 5.8321,
+      "over20MB": false,
+      "sha256": "ab57eeafb704661b"
+    },
+    {
+      "path": "data/source/monthly/Mayo.csv",
+      "bytes": 7358485,
+      "mb": 7.0176,
+      "over20MB": false,
+      "sha256": "b49c9a1938c0406f"
+    },
+    {
+      "path": "docs/validation-results.json",
+      "bytes": 9037,
+      "mb": 0.0086,
+      "over20MB": false,
+      "sha256": "79223026a1189776"
     },
     {
       "path": "index.html",
-      "bytes": 7437,
-      "mb": 0.0071,
+      "bytes": 8149,
+      "mb": 0.0078,
       "over20MB": false,
-      "sha256": "43abeaaf3bf1c514"
+      "sha256": "7f10e2a5d970d411"
     },
     {
       "path": "js/app.js",
-      "bytes": 15443,
-      "mb": 0.0147,
+      "bytes": 41213,
+      "mb": 0.0393,
       "over20MB": false,
-      "sha256": "b96065c32fae2f63"
+      "sha256": "4f0879a7215a3191"
     },
     {
       "path": "manifest.json",
-      "bytes": 626,
+      "bytes": 636,
       "mb": 0.0006,
       "over20MB": false,
-      "sha256": "e1f61fdf7e81310e"
+      "sha256": "2db1c6208b53aceb"
     },
     {
       "path": "service-worker.js",
-      "bytes": 1214,
-      "mb": 0.0012,
+      "bytes": 1499,
+      "mb": 0.0014,
       "over20MB": false,
-      "sha256": "c62324262b83235f"
+      "sha256": "bd686569397fddc7"
+    },
+    {
+      "path": "tools/audit_runtime.mjs",
+      "bytes": 6973,
+      "mb": 0.0066,
+      "over20MB": false,
+      "sha256": "afa26d59f1265fa8"
+    },
+    {
+      "path": "tools/process_monthly_data.py",
+      "bytes": 43939,
+      "mb": 0.0419,
+      "over20MB": false,
+      "sha256": "c460e1835dde5ddd"
+    },
+    {
+      "path": "tools/requirements.txt",
+      "bytes": 17,
+      "mb": 0.0,
+      "over20MB": false,
+      "sha256": "9bba605fd7b6ea23"
+    },
+    {
+      "path": "tools/validate_project.py",
+      "bytes": 13035,
+      "mb": 0.0124,
+      "over20MB": false,
+      "sha256": "6f865f32d4eb4c4f"
     }
   ]
 }
