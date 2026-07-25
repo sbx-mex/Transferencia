@@ -1392,6 +1392,7 @@ def build_file_audit() -> None:
         path
         for path in PROJECT_ROOT.rglob("*")
         if path.is_file()
+        and ".git" not in path.parts
         and "__pycache__" not in path.parts
         and ".DS_Store" not in path.name
     ]
