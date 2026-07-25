@@ -50,6 +50,7 @@ summary = json_file(ROOT / "data" / "audit" / "resumen-procesamiento.json")
 exclusions = json_file(ROOT / "data" / "audit" / "exclusiones.json")
 hidden = json_file(ROOT / "data" / "audit" / "ocultos.json")
 inconsistencies = json_file(ROOT / "data" / "audit" / "inconsistencias-datos.json")
+date_audit = json_file(ROOT / "data" / "audit" / "fechas.json")
 html = (ROOT / "index.html").read_text(encoding="utf-8")
 css = (ROOT / "css" / "styles.css").read_text(encoding="utf-8")
 js = (ROOT / "js" / "app.js").read_text(encoding="utf-8")
@@ -84,6 +85,12 @@ fallback_period, fallback_used = processor.resolve_latest_period(
     processor.date(2026, 7, 24),
 )
 check("16. Prueba de fallback", fallback_used and fallback_period.file == "Junio.csv", "Sin Julio.csv se selecciona Junio.csv y se marca fallback.")
+check("16a. Sistema de semana comprobado", all(item["week_system"] == "ISO" for item in summary["monthly"]), "7/7 archivos coinciden con semana ISO.")
+check("16b. Patrones de fecha por archivo", all(item["date_pattern"] == "DD/MM/YYYY" for item in summary["monthly"][:6]) and summary["monthly"][-1]["date_pattern"] == "M/D/YYYY", "Enero–junio DD/MM/YYYY; julio M/D/YYYY.")
+check("16c. Fechas conservadas", summary["totals"]["dateConservedRows"] == 304498, "304,498 fechas mantienen su interpretación.")
+check("16d. Fechas corregidas", summary["totals"]["dateConvertedRows"] == 34664, "34,664 fechas M/D/YYYY normalizadas.")
+check("16e. Fechas ambiguas", summary["totals"]["dateAmbiguousRows"] == 0 and summary["totals"]["weekMismatchRows"] == 0, "0 fechas pendientes en las fuentes actuales.")
+check("16f. Auditoría de fechas trazable", sum(item["Cantidad registros"] for item in date_audit) == summary["totals"]["sourceRows"], "339,162 filas representadas con valor original, formato, fecha, año, semana y motivo.")
 check("17. Registros originales", summary["totals"]["sourceRows"] == 339162, "339,162 filas.")
 check("18. Consolidación total", summary["totals"]["recordsAuditoria"] == 338220, "338,220 registros técnicos después de Non Inventory.")
 check("19. Duplicados exactos", summary["totals"]["duplicateRows"] == 0, "0 duplicados.")
@@ -110,12 +117,13 @@ check("39. Carga mensual aislada", "requiredChunks" in js and "state.allRows=nee
 check("40. Error de un mes no bloquea los demás", "state.loadErrors.push" in js and "for(const chunk of needed)" in js, "Manejo por archivo.")
 check("41. Mensaje sin resultados", "No hay transferencias con los filtros actuales" in js, "Estado vacío accionable.")
 check("42. Indicadores reactivos", all(label in js for label in ["Registros analizados", "Casos críticos", "Registros excluidos"]), "KPIs calculados en apply/renderAll.")
-check("43. Trazabilidad en detalle", all(label in html for label in ["Archivo / fila", "Evidencia de cruce"]), "Columnas visibles.")
+check("43. Evidencia interna sin saturar tabla", "Archivo / fila" in html and "<th>Evidencia de cruce</th>" not in html and "function evidenceCell" in js, "Archivo/fila visible; evidencia conservada internamente.")
+check("43a. Detalle cerrado inicialmente", 'id="detailBody" hidden' in html and 'id="detailToggle"' in html and "Abrir detalle" in js and "Cerrar detalle" in js, "Control dinámico accesible con aria-expanded.")
 check("44. Pie de página único", html.count("Diseñado: Jorge Alcantar Aguiar &amp; Enrique César Flores") == 1, "Una sola aparición.")
-check("45. Responsive desde 320 px", "@media(max-width:420px)" in css and "overflow:auto" in css and "min-width:0" in css, "Reglas responsivas y contenedor de tabla.")
+check("45. Responsive desde 320 px", "@media(max-width:720px)" in css and "overflow:auto" in css and "min-width:0" in css, "Reglas móviles y contenedor de tabla sin desbordar la página.")
 check("46. Sin rutas absolutas", not re.search(r"""(?:src|href)=["']/(?!/)""", html) and "/workspace/" not in html + js + sw, "Rutas relativas.")
 check("47. Manifest válido", json_file(ROOT / "manifest.json")["start_url"] == "./", "start_url y scope relativos.")
-check("48. Caché PWA incrementada", "transferencias-v13-mensual-auditada" in sw, "Versión v13.")
+check("48. Caché PWA incrementada", "transferencias-v14-fechas-auditadas" in sw, "Versión v14.")
 check("49. Datos network-first", "/data/chunks/" in sw and "cache.put(event.request,copy)" in sw, "Actualiza caché y conserva fallback.")
 check("50. JavaScript válido", subprocess.run(["node", "--check", str(ROOT / "js/app.js")], capture_output=True).returncode == 0 and subprocess.run(["node", "--check", str(ROOT / "service-worker.js")], capture_output=True).returncode == 0, "app.js y service-worker.js.")
 
@@ -133,6 +141,43 @@ runtime = subprocess.run(
 check("52. Lógica de conciliación ejecutable", runtime.returncode == 0, "Auditoría Node completada.")
 runtime_data = json_file(runtime_path)
 check("53. Casos críticos calculados", runtime_data["criticalCaseCount"] == 31585, "31,585 casos mensuales requieren revisión.")
+critical_case = next(
+    (
+        item
+        for item in runtime_data["criticalCases"]
+        if item["Fecha"] == "2026-07-21"
+        and item["CeCo origen"] == "38339"
+        and item["CeCo destino"] == "38456"
+        and "Vaso de Plastico 20 oz" in item["Artículos"]
+    ),
+    None,
+)
+check(
+    "53a. Caso 38339 → 38456",
+    critical_case is not None
+    and critical_case["Estatus"] == "Falta salida"
+    and critical_case["Monto salida"] == 0
+    and critical_case["Monto entrada"] == 228,
+    "La fuente conserva 0.00 en 38339 y evidencia entrada 150.0 / $228.00 en 38456; no se inventa salida.",
+)
+case_date = next(
+    (
+        item
+        for item in date_audit
+        if item["Archivo"] == "Julio.csv"
+        and item["Valor original"] == "7/21/2026"
+        and item["Semana informada"] == 30
+    ),
+    None,
+)
+check(
+    "53b. Fecha crítica normalizada",
+    case_date is not None
+    and case_date["Fecha normalizada"] == "21/07/2026"
+    and case_date["Formato detectado"] == "M/D/YYYY"
+    and case_date["Semana calculada"] == 30,
+    "7/21/2026 → 21/07/2026 por Año 2026, semana ISO 30 y mes Julio.",
+)
 check("54. Julio sin datos residuales", runtime_data["monthly"][-1]["matchingRowsLoaded"] == 36615, "Solo Julio se necesita para conciliar el periodo más reciente.")
 check("55. Todos los meses consultables", len(runtime_data["monthly"]) == 7 and runtime_data["allMonths"]["visibleTransfers"] > 0, "7 periodos y vista consolidada.")
 

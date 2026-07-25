@@ -1,7 +1,7 @@
 {
   "summary": {
-    "executed": 60,
-    "passed": 60,
+    "executed": 69,
+    "passed": 69,
     "failed": 0,
     "notExecuted": [
       "Validación visual real en navegador a 320/768/1440 px.",
@@ -89,6 +89,36 @@
       "Prueba": "16. Prueba de fallback",
       "Resultado": "Aprobada",
       "Evidencia": "Sin Julio.csv se selecciona Junio.csv y se marca fallback."
+    },
+    {
+      "Prueba": "16a. Sistema de semana comprobado",
+      "Resultado": "Aprobada",
+      "Evidencia": "7/7 archivos coinciden con semana ISO."
+    },
+    {
+      "Prueba": "16b. Patrones de fecha por archivo",
+      "Resultado": "Aprobada",
+      "Evidencia": "Enero–junio DD/MM/YYYY; julio M/D/YYYY."
+    },
+    {
+      "Prueba": "16c. Fechas conservadas",
+      "Resultado": "Aprobada",
+      "Evidencia": "304,498 fechas mantienen su interpretación."
+    },
+    {
+      "Prueba": "16d. Fechas corregidas",
+      "Resultado": "Aprobada",
+      "Evidencia": "34,664 fechas M/D/YYYY normalizadas."
+    },
+    {
+      "Prueba": "16e. Fechas ambiguas",
+      "Resultado": "Aprobada",
+      "Evidencia": "0 fechas pendientes en las fuentes actuales."
+    },
+    {
+      "Prueba": "16f. Auditoría de fechas trazable",
+      "Resultado": "Aprobada",
+      "Evidencia": "339,162 filas representadas con valor original, formato, fecha, año, semana y motivo."
     },
     {
       "Prueba": "17. Registros originales",
@@ -221,9 +251,14 @@
       "Evidencia": "KPIs calculados en apply/renderAll."
     },
     {
-      "Prueba": "43. Trazabilidad en detalle",
+      "Prueba": "43. Evidencia interna sin saturar tabla",
       "Resultado": "Aprobada",
-      "Evidencia": "Columnas visibles."
+      "Evidencia": "Archivo/fila visible; evidencia conservada internamente."
+    },
+    {
+      "Prueba": "43a. Detalle cerrado inicialmente",
+      "Resultado": "Aprobada",
+      "Evidencia": "Control dinámico accesible con aria-expanded."
     },
     {
       "Prueba": "44. Pie de página único",
@@ -233,7 +268,7 @@
     {
       "Prueba": "45. Responsive desde 320 px",
       "Resultado": "Aprobada",
-      "Evidencia": "Reglas responsivas y contenedor de tabla."
+      "Evidencia": "Reglas móviles y contenedor de tabla sin desbordar la página."
     },
     {
       "Prueba": "46. Sin rutas absolutas",
@@ -248,7 +283,7 @@
     {
       "Prueba": "48. Caché PWA incrementada",
       "Resultado": "Aprobada",
-      "Evidencia": "Versión v13."
+      "Evidencia": "Versión v14."
     },
     {
       "Prueba": "49. Datos network-first",
@@ -274,6 +309,16 @@
       "Prueba": "53. Casos críticos calculados",
       "Resultado": "Aprobada",
       "Evidencia": "31,585 casos mensuales requieren revisión."
+    },
+    {
+      "Prueba": "53a. Caso 38339 → 38456",
+      "Resultado": "Aprobada",
+      "Evidencia": "La fuente conserva 0.00 en 38339 y evidencia entrada 150.0 / $228.00 en 38456; no se inventa salida."
+    },
+    {
+      "Prueba": "53b. Fecha crítica normalizada",
+      "Resultado": "Aprobada",
+      "Evidencia": "7/21/2026 → 21/07/2026 por Año 2026, semana ISO 30 y mes Julio."
     },
     {
       "Prueba": "54. Julio sin datos residuales",

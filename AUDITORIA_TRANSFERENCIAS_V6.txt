@@ -1,4 +1,4 @@
-Auditoría Transferencias v13 - procesamiento mensual trazable
+Auditoría Transferencias v14 - fechas y procesamiento mensual trazables
 
 Fuentes:
 - Enero.csv a Julio.csv.
@@ -11,8 +11,11 @@ Periodo:
 
 Controles:
 - Los CSV se ordenan por mes real, no por orden alfabético ni fecha del archivo.
-- Julio usa interpretación mes/día confirmada contra el nombre del archivo.
-- Los demás meses usan la interpretación que coincide exactamente con su mes.
+- La semana ISO fue comprobada con registros no ambiguos de los siete archivos.
+- Julio usa M/D/YYYY, confirmado contra Año, Semana ISO y nombre del archivo.
+- Enero a junio conservan DD/MM/YYYY, confirmado con los mismos criterios.
+- Las fechas que no coincidan simultáneamente se separan como ambiguas; no se
+  invierten ni corrigen por suposición.
 - 339,162 registros originales conciliados sin diferencia.
 - 338,220 registros conservados en los bloques técnicos.
 - 942 registros Non Inventory excluidos con evidencia.
@@ -26,6 +29,7 @@ Archivos técnicos:
 - data/audit/exclusiones.json
 - data/audit/ocultos.json
 - data/audit/inconsistencias-datos.json
+- data/audit/fechas.json
 
 Validación:
 - La lógica de conciliación existente se conserva.

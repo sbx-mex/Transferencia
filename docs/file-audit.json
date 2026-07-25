@@ -1,20 +1,20 @@
 {
-  "version": "v13-mensual-auditada",
+  "version": "v14-fechas-auditadas",
   "limitBytes": 20971520,
   "files": [
     {
       "path": "AUDITORIA_TRANSFERENCIAS_V6.txt",
-      "bytes": 1287,
-      "mb": 0.0012,
+      "bytes": 1518,
+      "mb": 0.0014,
       "over20MB": false,
-      "sha256": "113b69424b47396f"
+      "sha256": "ae9ae3d05f4a7a63"
     },
     {
       "path": "README.md",
-      "bytes": 3161,
-      "mb": 0.003,
+      "bytes": 3663,
+      "mb": 0.0035,
       "over20MB": false,
-      "sha256": "f656605cd12f903e"
+      "sha256": "8e8d05a627fe98b7"
     },
     {
       "path": "assets/icons/icon-192.svg",
@@ -45,11 +45,39 @@
       "sha256": "439076b283a0cbbb"
     },
     {
-      "path": "css/styles.css",
-      "bytes": 12221,
-      "mb": 0.0117,
+      "path": "audit/exclusiones.json",
+      "bytes": 677685,
+      "mb": 0.6463,
       "over20MB": false,
-      "sha256": "3c704e8344b7e22e"
+      "sha256": "b76e87efb9e86f3b"
+    },
+    {
+      "path": "audit/inconsistencias-datos.json",
+      "bytes": 6669184,
+      "mb": 6.3602,
+      "over20MB": false,
+      "sha256": "ce187b93861d7429"
+    },
+    {
+      "path": "audit/ocultos.json",
+      "bytes": 700848,
+      "mb": 0.6684,
+      "over20MB": false,
+      "sha256": "8b0a708c5213a26c"
+    },
+    {
+      "path": "audit/resumen-procesamiento.json",
+      "bytes": 9824,
+      "mb": 0.0094,
+      "over20MB": false,
+      "sha256": "ecf230c72962c339"
+    },
+    {
+      "path": "css/styles.css",
+      "bytes": 11494,
+      "mb": 0.011,
+      "over20MB": false,
+      "sha256": "e0e9338070a205d8"
     },
     {
       "path": "data/audit/exclusiones.json",
@@ -57,6 +85,13 @@
       "mb": 0.6463,
       "over20MB": false,
       "sha256": "b76e87efb9e86f3b"
+    },
+    {
+      "path": "data/audit/fechas.json",
+      "bytes": 107173,
+      "mb": 0.1022,
+      "over20MB": false,
+      "sha256": "939d96337459eed7"
     },
     {
       "path": "data/audit/inconsistencias-datos.json",
@@ -74,10 +109,10 @@
     },
     {
       "path": "data/audit/resumen-procesamiento.json",
-      "bytes": 9824,
-      "mb": 0.0094,
+      "bytes": 11309,
+      "mb": 0.0108,
       "over20MB": false,
-      "sha256": "ecf230c72962c339"
+      "sha256": "d02a92e7f00faaae"
     },
     {
       "path": "data/chunks/transferencias-2026-01.json",
@@ -137,10 +172,10 @@
     },
     {
       "path": "data/manifest-data.json",
-      "bytes": 200443,
-      "mb": 0.1912,
+      "bytes": 201725,
+      "mb": 0.1924,
       "over20MB": false,
-      "sha256": "d71b19a4d2ef0f81"
+      "sha256": "a6398efa4b022574"
     },
     {
       "path": "data/source/Base_Transferencias.xlsx",
@@ -200,24 +235,24 @@
     },
     {
       "path": "docs/validation-results.json",
-      "bytes": 9037,
-      "mb": 0.0086,
+      "bytes": 10639,
+      "mb": 0.0101,
       "over20MB": false,
-      "sha256": "79223026a1189776"
+      "sha256": "723cf05c873a680f"
     },
     {
       "path": "index.html",
-      "bytes": 8149,
-      "mb": 0.0078,
+      "bytes": 8327,
+      "mb": 0.0079,
       "over20MB": false,
-      "sha256": "7f10e2a5d970d411"
+      "sha256": "140264b931698895"
     },
     {
       "path": "js/app.js",
-      "bytes": 41213,
-      "mb": 0.0393,
+      "bytes": 41676,
+      "mb": 0.0397,
       "over20MB": false,
-      "sha256": "4f0879a7215a3191"
+      "sha256": "c06d60a98ab4beb8"
     },
     {
       "path": "manifest.json",
@@ -231,7 +266,7 @@
       "bytes": 1499,
       "mb": 0.0014,
       "over20MB": false,
-      "sha256": "bd686569397fddc7"
+      "sha256": "b2d817bb1df850ab"
     },
     {
       "path": "tools/audit_runtime.mjs",
@@ -242,10 +277,10 @@
     },
     {
       "path": "tools/process_monthly_data.py",
-      "bytes": 43939,
-      "mb": 0.0419,
+      "bytes": 53718,
+      "mb": 0.0512,
       "over20MB": false,
-      "sha256": "c460e1835dde5ddd"
+      "sha256": "fbd66431ad96a1db"
     },
     {
       "path": "tools/requirements.txt",
@@ -256,10 +291,10 @@
     },
     {
       "path": "tools/validate_project.py",
-      "bytes": 13035,
-      "mb": 0.0124,
+      "bytes": 15578,
+      "mb": 0.0149,
       "over20MB": false,
-      "sha256": "6f865f32d4eb4c4f"
+      "sha256": "ff245ad31820d215"
     }
   ]
 }

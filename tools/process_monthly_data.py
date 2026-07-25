@@ -138,6 +138,12 @@ class MonthlyResult:
     directory_matches: int = 0
     directory_missing: int = 0
     invalid_dates: int = 0
+    date_conserved_rows: int = 0
+    date_converted_rows: int = 0
+    date_ambiguous_rows: int = 0
+    week_mismatch_rows: int = 0
+    date_pattern: str = ""
+    week_system: str = ""
     future_dates: int = 0
     zero_quantity_rows: int = 0
     zero_total_rows: int = 0
@@ -152,6 +158,18 @@ class MonthlyResult:
     elapsed_seconds: float = 0.0
     status: str = "Procesado"
     message: str = ""
+
+
+@dataclass(frozen=True)
+class DateResolution:
+    original: str
+    detected_format: str
+    normalized: date | None
+    calculated_year: int | None
+    calculated_week: int | None
+    validation_result: str
+    reason: str
+    category: str
 
 
 def text(value: Any) -> str:
@@ -222,26 +240,146 @@ def month_from_filename(path: Path) -> int | None:
     return int(match.group(1)) if match else None
 
 
-def parse_month_date(value: Any, expected_month: int, expected_year: int) -> date | None:
+def date_candidates(value: Any) -> list[tuple[str, date]]:
     raw = text(value)
-    candidates: list[date] = []
-    for fmt in ("%d/%m/%Y", "%m/%d/%Y", "%Y-%m-%d", "%d-%m-%Y", "%m-%d-%Y"):
+    candidates: list[tuple[str, date]] = []
+    for label, fmt in (
+        ("DD/MM/YYYY", "%d/%m/%Y"),
+        ("M/D/YYYY", "%m/%d/%Y"),
+        ("YYYY-MM-DD", "%Y-%m-%d"),
+        ("DD-MM-YYYY", "%d-%m-%Y"),
+        ("M-D-YYYY", "%m-%d-%Y"),
+    ):
         try:
             parsed = datetime.strptime(raw, fmt).date()
         except ValueError:
             continue
-        if parsed not in candidates:
-            candidates.append(parsed)
-    exact = [
-        parsed
-        for parsed in candidates
-        if parsed.month == expected_month and parsed.year == expected_year
+        if (label, parsed) not in candidates:
+            candidates.append((label, parsed))
+    return candidates
+
+
+def source_week(value: date, system: str) -> int:
+    if system == "ISO":
+        return value.isocalendar().week
+    if system == "DOMINGO_0":
+        return int(value.strftime("%U"))
+    if system == "LUNES_0":
+        return int(value.strftime("%W"))
+    raise ValueError(f"Sistema de semana no reconocido: {system}")
+
+
+def detect_file_date_rules(
+    raw_rows: list[dict[str, Any]],
+    header_map: dict[str, str],
+    expected_month: int,
+    expected_year: int,
+) -> tuple[str, str]:
+    format_counts: Counter[str] = Counter()
+    week_matches: Counter[str] = Counter()
+    for raw in raw_rows:
+        try:
+            row_year = integer(raw.get(header_map["Año"]))
+            row_week = integer(raw.get(header_map["Semana"]))
+        except (TypeError, ValueError):
+            continue
+        exact = [
+            (label, parsed)
+            for label, parsed in date_candidates(raw.get(header_map["Dia"]))
+            if parsed.year == row_year == expected_year
+            and parsed.month == expected_month
+        ]
+        unique_dates = {parsed for _, parsed in exact}
+        if len(unique_dates) != 1:
+            continue
+        parsed = next(iter(unique_dates))
+        labels = {label for label, value in exact if value == parsed}
+        if len(labels) == 1:
+            format_counts[next(iter(labels))] += 1
+        for system in ("ISO", "DOMINGO_0", "LUNES_0"):
+            if source_week(parsed, system) == row_week:
+                week_matches[system] += 1
+    if not week_matches:
+        raise ValueError("No fue posible comprobar el sistema de semana con fechas no ambiguas.")
+    highest = max(week_matches.values())
+    systems = sorted(system for system, count in week_matches.items() if count == highest)
+    if len(systems) != 1:
+        raise ValueError(f"El sistema de semana no es inequívoco: {systems}.")
+    predominant = format_counts.most_common(1)[0][0] if format_counts else ""
+    return predominant, systems[0]
+
+
+def resolve_date(
+    value: Any,
+    expected_month: int,
+    expected_year: int,
+    reported_year: int,
+    reported_week: int,
+    week_system: str,
+    predominant_format: str,
+) -> DateResolution:
+    raw = text(value)
+    candidates = date_candidates(raw)
+    compatible = [
+        (label, parsed)
+        for label, parsed in candidates
+        if parsed.year == reported_year == expected_year
+        and parsed.month == expected_month
+        and source_week(parsed, week_system) == reported_week
     ]
-    if len(exact) == 1:
-        return exact[0]
-    if len(exact) > 1 and len(set(exact)) == 1:
-        return exact[0]
-    return None
+    unique_dates = {parsed for _, parsed in compatible}
+    if len(unique_dates) == 1:
+        parsed = next(iter(unique_dates))
+        labels = [label for label, value in compatible if value == parsed]
+        if len(set(labels)) > 1:
+            detected = "Coincidente DD/MM/YYYY = M/D/YYYY"
+            category = "Conservada"
+            reason = (
+                f"Ambas máscaras producen {parsed.strftime('%d/%m/%Y')} y coinciden "
+                f"con Año {reported_year}, Semana {reported_week} ({week_system}) y mes del CSV."
+            )
+        else:
+            detected = labels[0]
+            category = "Corregida" if detected in {"M/D/YYYY", "M-D-YYYY"} else "Conservada"
+            reason = (
+                f"{detected} coincide con Año {reported_year}, Semana {reported_week} "
+                f"({week_system}), mes del CSV y patrón predominante {predominant_format or 'comprobado'}."
+            )
+        return DateResolution(
+            original=raw,
+            detected_format=detected,
+            normalized=parsed,
+            calculated_year=parsed.year,
+            calculated_week=source_week(parsed, week_system),
+            validation_result="Válida",
+            reason=reason,
+            category=category,
+        )
+    reason = (
+        "Ninguna interpretación coincide simultáneamente con Año, Semana y mes del CSV."
+        if not unique_dates
+        else "Más de una interpretación distinta coincide con Año, Semana y mes del CSV."
+    )
+    return DateResolution(
+        original=raw,
+        detected_format="Fecha ambigua" if candidates else "Formato inválido",
+        normalized=None,
+        calculated_year=None,
+        calculated_week=None,
+        validation_result="Pendiente de revisión",
+        reason=reason,
+        category="Ambigua",
+    )
+
+
+def parse_month_date(value: Any, expected_month: int, expected_year: int) -> date | None:
+    """Compatibilidad para validaciones unitarias simples."""
+    candidates = {
+        parsed
+        for _, parsed in date_candidates(value)
+        if parsed.month == expected_month and parsed.year == expected_year
+    }
+    return next(iter(candidates)) if len(candidates) == 1 else None
 
 
 def resolve_latest_period(
@@ -419,6 +557,7 @@ def process() -> dict[str, Any]:
     all_exclusions: list[dict[str, Any]] = []
     all_hidden: list[dict[str, Any]] = []
     all_inconsistencies: list[dict[str, Any]] = []
+    date_audit_groups: dict[tuple[Any, ...], dict[str, Any]] = {}
     chunks: list[dict[str, Any]] = []
     weeks: set[int] = set()
     date_values: list[date] = []
@@ -502,6 +641,12 @@ def process() -> dict[str, Any]:
             except (TypeError, ValueError):
                 pass
         expected_year = source_years.most_common(1)[0][0] if source_years else today.year
+        predominant_format, week_system = detect_file_date_rules(
+            raw_rows,
+            header_map,
+            filename_month,
+            expected_year,
+        )
         result = MonthlyResult(
             file=path.name,
             month=filename_month,
@@ -509,6 +654,8 @@ def process() -> dict[str, Any]:
             encoding=encoding,
             delimiter=delimiter,
             source_rows=len(raw_rows),
+            date_pattern=predominant_format,
+            week_system=week_system,
         )
         month_label = MONTH_LABELS[filename_month - 1]
         output_rows: list[list[Any]] = []
@@ -524,8 +671,10 @@ def process() -> dict[str, Any]:
             directory_item = directory.get(ceco)
             region = directory_item["region"] if directory_item else ""
             dm = directory_item["dm"] if directory_item else ""
-            parsed = parse_month_date(row["Dia"], filename_month, expected_year)
-            if parsed is None:
+            try:
+                week = integer(row["Semana"])
+                year = integer(row["Año"])
+            except (TypeError, ValueError) as exc:
                 result.invalid_dates += 1
                 all_inconsistencies.append(
                     audit_record(
@@ -538,10 +687,90 @@ def process() -> dict[str, Any]:
                         ceco_normalized=ceco,
                         region=region,
                         dm=dm,
-                        issue_type="Fecha inválida o fuera del mes del archivo",
-                        original_value=text(row["Dia"]),
+                        issue_type="Año o Semana inválidos",
+                        original_value=f"Año {text(row['Año'])}; Semana {text(row['Semana'])}",
                         normalized_value="",
                         result="No procesado",
+                        action="Registro separado para revisión",
+                        status="Pendiente",
+                        risk="Alto",
+                    )
+                )
+                continue
+            resolution = resolve_date(
+                row["Dia"],
+                filename_month,
+                expected_year,
+                year,
+                week,
+                week_system,
+                predominant_format,
+            )
+            parsed = resolution.normalized
+            date_key = (
+                path.name,
+                resolution.original,
+                week,
+                resolution.detected_format,
+                parsed.isoformat() if parsed else "",
+                resolution.validation_result,
+                resolution.reason,
+                resolution.category,
+            )
+            date_entry = date_audit_groups.setdefault(
+                date_key,
+                {
+                    "Archivo": path.name,
+                    "Mes CSV": month_label,
+                    "Valor original": resolution.original,
+                    "Formato detectado": resolution.detected_format,
+                    "Fecha normalizada": parsed.strftime("%d/%m/%Y") if parsed else "",
+                    "Año informado": year,
+                    "Semana informada": week,
+                    "Año calculado": resolution.calculated_year,
+                    "Semana calculada": resolution.calculated_week,
+                    "Sistema semana": week_system,
+                    "Patrón predominante": predominant_format,
+                    "Resultado validación": resolution.validation_result,
+                    "Motivo": resolution.reason,
+                    "Clasificación": resolution.category,
+                    "Cantidad registros": 0,
+                    "Primera fila": source_row,
+                    "Última fila": source_row,
+                },
+            )
+            date_entry["Cantidad registros"] += 1
+            date_entry["Última fila"] = source_row
+            if resolution.category == "Conservada":
+                result.date_conserved_rows += 1
+            elif resolution.category == "Corregida":
+                result.date_converted_rows += 1
+            else:
+                result.date_ambiguous_rows += 1
+            if parsed is None:
+                result.invalid_dates += 1
+                if any(
+                    candidate.year == year
+                    and candidate.month == filename_month
+                    and source_week(candidate, week_system) != week
+                    for _, candidate in date_candidates(row["Dia"])
+                ):
+                    result.week_mismatch_rows += 1
+                all_inconsistencies.append(
+                    audit_record(
+                        month_label=month_label,
+                        filename=path.name,
+                        source_row=source_row,
+                        iso_date="",
+                        row=row,
+                        ceco_original=ceco_original,
+                        ceco_normalized=ceco,
+                        region=region,
+                        dm=dm,
+                        issue_type="Fecha ambigua o inconsistente con Año y Semana",
+                        original_value=text(row["Dia"]),
+                        normalized_value="",
+                        result=resolution.validation_result,
                         action="Registro separado para revisión",
                         status="Pendiente",
                         risk="Alto",
@@ -604,8 +833,6 @@ def process() -> dict[str, Any]:
                 quantity = number(row["Cantidad"])
                 unit_cost = number(row["Costo Unitario"])
                 total_cost = number(row["Costo Total"])
-                week = integer(row["Semana"])
-                year = integer(row["Año"])
             except (TypeError, ValueError) as exc:
                 all_inconsistencies.append(
                     audit_record(
@@ -983,6 +1210,18 @@ def process() -> dict[str, Any]:
             item.directory_missing for item in accepted_results
         ),
         "invalidDateRows": sum(item.invalid_dates for item in accepted_results),
+        "dateConservedRows": sum(
+            item.date_conserved_rows for item in accepted_results
+        ),
+        "dateConvertedRows": sum(
+            item.date_converted_rows for item in accepted_results
+        ),
+        "dateAmbiguousRows": sum(
+            item.date_ambiguous_rows for item in accepted_results
+        ),
+        "weekMismatchRows": sum(
+            item.week_mismatch_rows for item in accepted_results
+        ),
         "futureDateRows": sum(item.future_dates for item in accepted_results),
         "zeroTotalRows": sum(item.zero_total_rows for item in accepted_results),
         "zeroQuantityRows": sum(
@@ -1071,13 +1310,28 @@ def process() -> dict[str, Any]:
         json.dumps(all_inconsistencies, ensure_ascii=False, separators=(",", ":")),
         encoding="utf-8",
     )
+    (AUDIT_ROOT / "fechas.json").write_text(
+        json.dumps(
+            sorted(
+                date_audit_groups.values(),
+                key=lambda item: (
+                    item["Archivo"],
+                    item["Primera fila"],
+                    item["Valor original"],
+                ),
+            ),
+            ensure_ascii=False,
+            separators=(",", ":"),
+        ),
+        encoding="utf-8",
+    )
     (AUDIT_ROOT / "ocultos.json").write_text(
         json.dumps(all_hidden, ensure_ascii=False, separators=(",", ":")),
         encoding="utf-8",
     )
 
     manifest = {
-        "version": f"v13-mensual-auditada-{latest_valid_date or 'sin-fecha'}",
+        "version": f"v14-fechas-auditadas-{latest_valid_date or 'sin-fecha'}",
         "source": "CSV mensuales + Base_Transferencias.xlsx",
         "generatedAt": audit_summary["generatedAt"],
         "generatedFromHeaders": EXPECTED_HEADERS,
@@ -1107,6 +1361,7 @@ def process() -> dict[str, Any]:
             "exclusions": "data/audit/exclusiones.json",
             "inconsistencies": "data/audit/inconsistencias-datos.json",
             "hidden": "data/audit/ocultos.json",
+            "dates": "data/audit/fechas.json",
         },
         "businessRules": {
             "transferGroup": "Una transferencia por fecha, CeCo origen y CeCo destino.",
@@ -1118,6 +1373,7 @@ def process() -> dict[str, Any]:
             "unresolvedProvider": "Proveedor sin CeCo / Transferencias se conserva en auditoría técnica y se oculta en la vista.",
             "patrol": "Patrol se conserva en auditoría técnica y se oculta en la vista.",
             "futureOnly": "Una entrada se asocia a una salida de la misma fecha o posterior.",
+            "dateValidation": "Cada fecha se valida contra Año, semana ISO comprobada, mes del CSV y patrón predominante del archivo.",
             "sameDayIncluded": True,
             "costTolerance": 10,
             "duplicates": "Solo se retiran duplicados exactos de los 12 campos originales.",
@@ -1140,7 +1396,7 @@ def build_file_audit() -> None:
         and ".DS_Store" not in path.name
     ]
     payload = {
-        "version": "v13-mensual-auditada",
+        "version": "v14-fechas-auditadas",
         "limitBytes": 20 * 1024 * 1024,
         "files": [],
     }

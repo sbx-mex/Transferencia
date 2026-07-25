@@ -2,7 +2,7 @@
 
 ## Versión
 
-`v13-mensual-auditada`
+`v14-fechas-auditadas`
 
 Aplicación web estática para la auditoría crítica de transferencias entre tiendas.
 Conserva la conciliación existente y agrega trazabilidad desde cada CSV mensual
@@ -43,6 +43,12 @@ No es necesario modificar JavaScript para agregar meses posteriores.
 ## Controles del procesamiento
 
 - Detecta mes por nombre y lo confirma contra las fechas internas.
+- Determina el sistema de semana con registros no ambiguos; la fuente utiliza
+  semana ISO.
+- Conserva enero–junio como `DD/MM/YYYY` y normaliza julio desde `M/D/YYYY`,
+  validando cada fila contra Año, Semana y mes del CSV.
+- Separa cualquier fecha que no pueda resolverse sin adivinar y registra la
+  trazabilidad agrupada en `data/audit/fechas.json`.
 - Detecta codificación y delimitador.
 - Rechaza por separado los CSV incompatibles sin bloquear los demás.
 - Conserva los 12 campos originales y añade mes, archivo, fila y evidencia.
@@ -54,6 +60,8 @@ No es necesario modificar JavaScript para agregar meses posteriores.
   tablas, indicadores, gráficas y exportaciones operativas.
 - Calcula Última actualización con la fecha máxima válida del archivo del mes
   actual; si falta, usa el periodo más reciente y lo informa.
+- El detalle permanece cerrado inicialmente y “Evidencia de cruce” se conserva
+  en los datos de auditoría, sin saturar la tabla principal.
 
 ## Reglas de conciliación conservadas
 
