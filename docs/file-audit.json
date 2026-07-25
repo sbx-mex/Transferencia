@@ -3,6 +3,13 @@
   "limitBytes": 20971520,
   "files": [
     {
+      "path": ".github/workflows/update-monthly-data.yml",
+      "bytes": 1543,
+      "mb": 0.0015,
+      "over20MB": false,
+      "sha256": "e523ca0e9fd8e02a"
+    },
+    {
       "path": "AUDITORIA_TRANSFERENCIAS_V6.txt",
       "bytes": 1518,
       "mb": 0.0014,
@@ -11,10 +18,10 @@
     },
     {
       "path": "README.md",
-      "bytes": 3663,
-      "mb": 0.0035,
+      "bytes": 4084,
+      "mb": 0.0039,
       "over20MB": false,
-      "sha256": "8e8d05a627fe98b7"
+      "sha256": "7de9682c673424f2"
     },
     {
       "path": "assets/icons/icon-192.svg",
@@ -277,10 +284,10 @@
     },
     {
       "path": "tools/process_monthly_data.py",
-      "bytes": 53718,
-      "mb": 0.0512,
+      "bytes": 53755,
+      "mb": 0.0513,
       "over20MB": false,
-      "sha256": "fbd66431ad96a1db"
+      "sha256": "a07b15d1465a1647"
     },
     {
       "path": "tools/requirements.txt",
@@ -288,6 +295,13 @@
       "mb": 0.0,
       "over20MB": false,
       "sha256": "9bba605fd7b6ea23"
+    },
+    {
+      "path": "tools/validate_monthly_update.py",
+      "bytes": 5745,
+      "mb": 0.0055,
+      "over20MB": false,
+      "sha256": "d17c24c16386ed11"
     },
     {
       "path": "tools/validate_project.py",

@@ -18,27 +18,32 @@ hasta `Base_Directorio` y `Non Inventory`.
 Los datos publicados en la PWA se generan en `data/chunks/`. El navegador no
 requiere Python, Excel, backend ni servidor.
 
-## Actualización mensual
+## Actualización mensual automática
 
-1. Coloca el CSV nuevo en `data/source/monthly/`.
-2. Usa el nombre del mes correspondiente, por ejemplo `Agosto.csv`.
-3. Si cambió el maestro, reemplaza `data/source/Base_Transferencias.xlsx` sin
-   renombrar las hojas ni sus encabezados.
-4. Instala una sola vez las dependencias:
+El flujo `.github/workflows/update-monthly-data.yml` permite actualizar la
+aplicación sin modificar HTML, CSS ni JavaScript.
 
-   `python -m pip install -r tools/requirements.txt`
+1. Reemplaza el CSV del mes actual o agrega uno nuevo en
+   `data/source/monthly/`.
+2. Usa el nombre del mes correspondiente, por ejemplo `Agosto.csv`,
+   `Septiembre.csv` o `Octubre.csv`.
+3. Confirma el cambio en la rama `main`.
 
-5. Ejecuta:
+GitHub Actions detecta el CSV, instala las dependencias, ejecuta el procesador,
+valida todos los meses disponibles y guarda automáticamente únicamente los
+archivos de datos regenerados.
 
-   `python tools/process_monthly_data.py`
+Cada CSV debe contener el acumulado completo del mes y conservar los 12
+encabezados esperados. No es necesario crear carpetas, bloques JSON ni cambios
+de código para los meses posteriores.
 
-6. Ejecuta las validaciones:
+### Ejecución manual de respaldo
 
-   `python tools/validate_project.py`
+Si se necesita regenerar localmente:
 
-7. Publica los archivos regenerados.
-
-No es necesario modificar JavaScript para agregar meses posteriores.
+1. Ejecuta `python -m pip install -r tools/requirements.txt`.
+2. Ejecuta `python tools/process_monthly_data.py`.
+3. Ejecuta `python tools/validate_monthly_update.py`.
 
 ## Controles del procesamiento
 

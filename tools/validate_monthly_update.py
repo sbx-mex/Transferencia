@@ -15,6 +15,7 @@ MONTHLY_ROOT = ROOT / "data" / "source" / "monthly"
 MANIFEST_PATH = ROOT / "data" / "manifest-data.json"
 SUMMARY_PATH = ROOT / "data" / "audit" / "resumen-procesamiento.json"
 FILE_AUDIT_PATH = ROOT / "docs" / "file-audit.json"
+WORKFLOW_PATH = ROOT / ".github" / "workflows" / "update-monthly-data.yml"
 
 
 def load_json(path: Path):
@@ -29,6 +30,19 @@ def require(condition: bool, message: str) -> None:
 def main() -> None:
     csv_files = sorted(path.name for path in MONTHLY_ROOT.glob("*.csv"))
     require(csv_files, "No hay archivos CSV en data/source/monthly.")
+    require(WORKFLOW_PATH.exists(), "No existe la automatización mensual de GitHub Actions.")
+
+    workflow = WORKFLOW_PATH.read_text(encoding="utf-8")
+    for required_text in (
+        'data/source/monthly/*.csv',
+        "contents: write",
+        "python tools/process_monthly_data.py",
+        "python tools/validate_monthly_update.py",
+    ):
+        require(
+            required_text in workflow,
+            f"La automatización mensual no contiene: {required_text}",
+        )
 
     manifest = load_json(MANIFEST_PATH)
     summary = load_json(SUMMARY_PATH)
@@ -92,6 +106,15 @@ def main() -> None:
         not any(path == ".git" or path.startswith(".git/") for path in audited_paths),
         "La auditoría de archivos incluyó metadatos internos de Git.",
     )
+    for required_path in (
+        ".github/workflows/update-monthly-data.yml",
+        "README.md",
+        "tools/validate_monthly_update.py",
+    ):
+        require(
+            required_path in audited_paths,
+            f"La auditoría de archivos no incluye: {required_path}",
+        )
 
     for path in list((ROOT / "data").rglob("*.json")) + [
         ROOT / "manifest.json",
