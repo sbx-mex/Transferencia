@@ -88,38 +88,38 @@
     },
     {
       "path": "data/audit/exclusiones.json",
-      "bytes": 691331,
-      "mb": 0.6593,
+      "bytes": 713506,
+      "mb": 0.6805,
       "over20MB": false,
-      "sha256": "3d0f8dfac792505a"
+      "sha256": "9f6f2f1ab4b7522d"
     },
     {
       "path": "data/audit/fechas.json",
-      "bytes": 111094,
-      "mb": 0.1059,
+      "bytes": 112672,
+      "mb": 0.1075,
       "over20MB": false,
-      "sha256": "ff4b254287e6996c"
+      "sha256": "8ec7172ae1bc35db"
     },
     {
       "path": "data/audit/inconsistencias-datos.json",
-      "bytes": 6896550,
-      "mb": 6.5771,
+      "bytes": 7095448,
+      "mb": 6.7667,
       "over20MB": false,
-      "sha256": "a13e665a013efe9e"
+      "sha256": "5f035094a407d3b1"
     },
     {
       "path": "data/audit/ocultos.json",
-      "bytes": 711028,
-      "mb": 0.6781,
+      "bytes": 713998,
+      "mb": 0.6809,
       "over20MB": false,
-      "sha256": "968eb7cad7238538"
+      "sha256": "997d94361c5ee3de"
     },
     {
       "path": "data/audit/resumen-procesamiento.json",
-      "bytes": 11304,
-      "mb": 0.0108,
+      "bytes": 12607,
+      "mb": 0.012,
       "over20MB": false,
-      "sha256": "5d73ad030f50d18a"
+      "sha256": "420e97b20487a15f"
     },
     {
       "path": "data/chunks/transferencias-2026-01.json",
@@ -165,10 +165,17 @@
     },
     {
       "path": "data/chunks/transferencias-2026-07.json",
-      "bytes": 4896999,
-      "mb": 4.6701,
+      "bytes": 5158795,
+      "mb": 4.9198,
       "over20MB": false,
-      "sha256": "ae93900cb855ddc7"
+      "sha256": "7ed7199a0fe57e23"
+    },
+    {
+      "path": "data/chunks/transferencias-2026-08.json",
+      "bytes": 222210,
+      "mb": 0.2119,
+      "over20MB": false,
+      "sha256": "373261ba0942b069"
     },
     {
       "path": "data/juntemonos-mas.json",
@@ -179,10 +186,10 @@
     },
     {
       "path": "data/manifest-data.json",
-      "bytes": 201764,
-      "mb": 0.1924,
+      "bytes": 203303,
+      "mb": 0.1939,
       "over20MB": false,
-      "sha256": "2e80e483fe0b95bb"
+      "sha256": "40fc08ba37f66cac"
     },
     {
       "path": "data/source/Base_Transferencias.xlsx",
@@ -197,6 +204,13 @@
       "mb": 6.9747,
       "over20MB": false,
       "sha256": "f1bdf1b296ac113e"
+    },
+    {
+      "path": "data/source/monthly/Agosto.csv",
+      "bytes": 315012,
+      "mb": 0.3004,
+      "over20MB": false,
+      "sha256": "a5276cee19971639"
     },
     {
       "path": "data/source/monthly/Enero.csv",
@@ -214,10 +228,10 @@
     },
     {
       "path": "data/source/monthly/Julio.csv",
-      "bytes": 6784028,
-      "mb": 6.4698,
+      "bytes": 7150742,
+      "mb": 6.8195,
       "over20MB": false,
-      "sha256": "3e20562bfad8db2e"
+      "sha256": "3a509074d3693474"
     },
     {
       "path": "data/source/monthly/Junio.csv",
