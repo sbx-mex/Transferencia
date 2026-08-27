@@ -91,35 +91,35 @@
       "bytes": 749552,
       "mb": 0.7148,
       "over20MB": false,
-      "sha256": "8d4271802e47ccaf"
+      "sha256": "49cc6a4985400f61"
     },
     {
       "path": "data/audit/fechas.json",
       "bytes": 120615,
       "mb": 0.115,
       "over20MB": false,
-      "sha256": "11a382fe3e93d423"
+      "sha256": "e7fb3417f06367ea"
     },
     {
       "path": "data/audit/inconsistencias-datos.json",
-      "bytes": 7531314,
-      "mb": 7.1824,
+      "bytes": 7541611,
+      "mb": 7.1922,
       "over20MB": false,
-      "sha256": "3a2383cd4e52edee"
+      "sha256": "710106aad9aaef09"
     },
     {
       "path": "data/audit/ocultos.json",
-      "bytes": 726558,
+      "bytes": 726561,
       "mb": 0.6929,
       "over20MB": false,
-      "sha256": "dd12a5461cffebc6"
+      "sha256": "aa80ea6f8f94ac6f"
     },
     {
       "path": "data/audit/resumen-procesamiento.json",
-      "bytes": 12637,
-      "mb": 0.0121,
+      "bytes": 12627,
+      "mb": 0.012,
       "over20MB": false,
-      "sha256": "4889d37561b66e3a"
+      "sha256": "efe8547162acc771"
     },
     {
       "path": "data/chunks/transferencias-2026-01.json",
@@ -172,10 +172,10 @@
     },
     {
       "path": "data/chunks/transferencias-2026-08.json",
-      "bytes": 2316970,
-      "mb": 2.2096,
+      "bytes": 2332684,
+      "mb": 2.2246,
       "over20MB": false,
-      "sha256": "b9b926259d069b51"
+      "sha256": "0f954786a8a1b595"
     },
     {
       "path": "data/juntemonos-mas.json",
@@ -186,10 +186,10 @@
     },
     {
       "path": "data/manifest-data.json",
-      "bytes": 203799,
-      "mb": 0.1944,
+      "bytes": 203957,
+      "mb": 0.1945,
       "over20MB": false,
-      "sha256": "bfaec65180144708"
+      "sha256": "f7e03e9a891ecaf3"
     },
     {
       "path": "data/source/Base_Transferencias.xlsx",
@@ -207,10 +207,10 @@
     },
     {
       "path": "data/source/monthly/Agosto.csv",
-      "bytes": 3239167,
-      "mb": 3.0891,
+      "bytes": 3259849,
+      "mb": 3.1088,
       "over20MB": false,
-      "sha256": "a7ef0da2f5b7e2e3"
+      "sha256": "39357334e0392b02"
     },
     {
       "path": "data/source/monthly/Enero.csv",
